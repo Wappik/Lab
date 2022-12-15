@@ -1,0 +1,494 @@
+2. Одномерные массивы
+2.1 Общие сведения
+2.2 Постановка задач
+	Задание 1. Дан целочисленный массив А(п). Найти минимальный и максимальный элементы массива и увеличить в два раза элементы, расположенные между ними.
+	Задание 2. Дан одномерный массив целых чисел. Преобразовать элементы массива таким образом, чтобы вначале шли отрицательные элементы в порядке возрастания, а затем положительные в том же порядке.
+
+2.3 Математическое решение
+	Алгоритм решения задания 1: Создаем переменные max, maxIndex, min, и minIndex, где max и min будут хранить минимальное и максимальное значение в массиве, а maxIndex и minIndex будут хранить индексы данных элементов. Чтобы найти максимальное и минимальное значение пройдемся линейно по каждому элементу массива, сравнивая максимальный и минимальных элемент на данном шаге с переменной на каждом шаге цикла, в случае если условие будет удовлетворенно, присваиваем новое значение максимума или минимума, и соответственно их индексы обновляем. Таким образом мы получаем как максимальный и минимальный элемент, а так же и их индексы. Далее запускаем цикл от минимального значения среди сохраненных индексов, до максимального, и увеличиваем значения в два раза по индексам получаемым в результате работы цикла.
+	Алгоритм решения задания 2: В связи с тем, что по условию задачи нужно отсортировать в массиве сначала отрицательные элементы по возрастанию, затем положительные, это будет являться обычной сортировкой элементов массива по возрастанию. Воспользуемся сортировкой пузырьком для того, чтобы отсортировать массив.
+
+2.4 Блок-схемы алгоритмов
+2.5 Программная реализация
+	Листинг программы задания 1:
+using System;
+using System.Text;
+
+namespace Task1
+{
+    internal class Task1
+    {
+        static void Main(string[] args)
+        {
+            int[] a = Console.ReadLine().Split(' ').Select(x => Convert.ToInt32(x)).ToArray();
+            int n = a.Length;
+            int max = a[0], maxIndex = 0, min = a[0], minIndex = 0;
+            searchingForValues(a, n, max, min, ref maxIndex, ref minIndex);
+            actionsWithARange(a, minIndex, maxIndex); 
+            printArray(a, n);
+            Console.ReadKey();
+        }
+
+        static void searchingForValues(int[] a, int n, int max, int min, ref int maxIndex, ref int minIndex)
+        {
+            for (int i = 1; i < n; i++)
+            {
+                if (max < a[i])
+                {
+                    max = a[i];
+                    maxIndex = i;
+                }
+
+                if (min > a[i])
+                {
+                    min = a[i];
+                    minIndex = i;
+                }
+            }
+        }
+
+        static void actionsWithARange(int[] a, int minIndex, int maxIndex)
+        {
+            for (int i = ((minIndex < maxIndex) ? minIndex : maxIndex) + 1; i < ((minIndex < maxIndex) ? maxIndex : minIndex); i++)
+            {
+                a[i] *= 2;
+            }
+        }
+
+        static void printArray(int[] a, int n)
+        {
+            for (int i = 0; i < n; i++)
+            {
+                Console.Write($"{a[i]} ");
+            }
+        }
+    }
+}
+
+	Листинг программы задания 2:
+using System;
+using System.Text;
+using Internal;
+
+namespace Task2
+{
+    internal class Task2
+    {
+        static void Main(string[] args)
+        {
+            int[] a = Console.ReadLine().Split(' ').Select(x => Convert.ToInt32(x)).ToArray();
+            int n = a.Length;
+
+            bubbleSort(a, n);
+            printArray(a, n);
+            Console.ReadKey();
+        }
+
+        static void bubbleSort(int[] a, int n)
+        {
+            for (int i = 0; i < n - 1; i++)
+            {
+                for (int j = 0; j < n - 1; j++)
+                {
+                    if (a[j] > a[j + 1])
+                    
+                        int temp = a[j];
+                        a[j] = a[j + 1];
+                        a[j + 1] = temp;
+                    }
+                }
+            }
+        }
+
+        static void printArray(int[] a, int n)
+        {
+            for (int i = 0; i < n; i++)
+            {
+                Console.Write($"{a[i]} ");
+            }
+        }
+    }
+}
+
+2.6 Скриншоты работы программ
+
+3. Двумерные массивы
+3.1 Общие сведения
+3.2 Постановка задач
+	Задание 1: Дан двумерный массив А(п,п). Отсортировать элементы первой строки по возрастанию и переставить столбцы в соответствии с сортировкой.
+	Задание 2: Все ненулевые элементы матрицы D(k,l) расположить в начале массива E(k*l) и подсчитать их количество.
+3.3 Математическое решение
+	Алгоритм решения задания 1: Заполняем матрицу случайными значениями. Далее идем по первой строке и сортируем её алгоритмом пузырьковой сортировки, однако замену значений делаем через цикл, тем самым обращаясь ко всем элементам столбца и меняя их местами.
+	Алгоритм решения задания 2: Заполняем матрицу случайными значениями. Заводим счетчик и создаем массив размером k*l и заполняем его значеними из матрицы при условии, что эти значения не будут равны 0, с каждым таким значением увеличиваем значение счетчика и выводим получившийся массив и количество ненулевые значений, которым является наш счетчик.
+
+3.4 Блок-схемы алгоритмов
+3.5 Программная реализация
+	Листинг программы задания 1:
+using System;
+
+namespace Task3
+{
+    class Task3
+    {
+        static void Main(string[] args)
+        {
+            int n = Convert.ToInt32(Console.ReadLine());
+            int[,] a = new int[n, n];
+            randomValues(a, n);
+            print(a, n);
+            sortMatrix(a, n);
+            Console.WriteLine();
+            print(a, n);
+            Console.ReadKey();
+        }
+
+        static void print(int[,] a, int n)
+        {
+            for (int i = 0; i < n; i++)
+            {
+                for (int j = 0; j < n; j++)
+                {
+                    Console.Write(a[i, j] + " ");
+                }
+                Console.WriteLine();
+            }
+        }
+
+        static void randomValues(int[,] a, int n)
+        {
+            Random rand = new Random();
+            for(int i = 0; i < n; i++)
+            {
+                for(int j = 0; j < n; j++)
+                {
+                    a[i, j] = rand.Next(-100, 100);
+                }
+            }
+        }
+
+        static void sortMatrix(int[,] a, int n)
+        {
+            for (int i = 0; i < n - 1; i++)
+            {
+                for (int j = 0; j < n - 1; j++)
+                {
+                    if (a[0, j] > a[0, j + 1])
+                    {
+                        for (int k = 0; k < n; k++)
+                        {
+                            int temp = a[k, j];
+                            a[k, j] = a[k, j + 1];
+                            a[k, j + 1] = temp;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+
+	Листинг программы задания 2:
+using System;
+
+namespace Task4
+{
+    class Task4
+    {
+        static void Main(string[] args)
+        {
+            string[] tokens = Console.ReadLine().Split(' ');
+            int k = int.Parse(tokens[0]), l = int.Parse(tokens[1]);
+            int[,] a = new int[k, l];
+            int[] newA = new int[k * l];
+            randomValues(a, k, l);
+            printMatrix(a, k, l);
+            int count = createArray(a, newA, k, l);
+
+            Console.WriteLine();
+
+            printArray(newA, count);
+	    Console.WriteLine(count);
+            Console.ReadKey();
+        }
+
+        static bool isZero(int a) { return a == 0; }
+
+        static void printArray(int[] a, int n)
+        {
+            for(int i = 0; i < n; i++)
+            {
+                Console.Write(a[i] + " ");
+            }
+            Console.WriteLine();
+        }
+
+        static void printMatrix(int[,] a, int n, int m)
+        {
+            for (int i = 0; i < n; i++)
+            {
+                for (int j = 0; j < m; j++)
+                {
+                    Console.Write(a[i, j] + " ");
+                }
+                Console.WriteLine();
+            }
+        }
+
+        static void randomValues(int[,] a, int n, int m)
+        {
+            Random rand = new Random();
+            for (int i = 0; i < n; i++)
+            {
+                for (int j = 0; j < m; j++)
+                {
+                    a[i, j] = rand.Next(0, 10);
+                }
+            }
+        }
+
+        static int createArray(int[,] a, int[] newA, int n, int m)
+        {
+            int count = 0;
+            for (int i = 0; i < n; i++)
+            {
+                for (int j = 0; j < m; j++)
+                {
+                    if (!isZero(a[i, j]))
+                    {
+                        newA[count] = a[i, j];
+                        count++;
+                    }
+                }
+            }
+            return count;
+        }
+    }
+}
+
+3.6 Скриншоты выполнения программ
+
+4. Строки
+4.1 Общие сведения
+4.2 Постановка задач
+	Задание 1: В строке заменить все двоеточия (:) точкой с запятой (;). Подсчитать количество замен.
+	Задание 2: Даны текст программы на каком-либо алгоритмическом языке и словарь зарезервированных слов этого языка (в английской транскрипции). Преобразовать текст, записав все зарезервированные слова прописными буквами, а остальные конструкции (имена и т.д.) — строчными. Русские буквы (имена, литералы) не заменять.
+4.3 
+	Алгоритм решения задания 1: Пройдемся по заданной строке и посчитаем количество вхождений (:), далее при помощь метода .Replace() заменим символы (:) на (;).
+	Алгоритм решения задания 2: Возьмем для хранения текста программы на алгоритмическом языке C++, Multiline String, который позволит нам хранить в одном string многострочное значение. Далее разобьём данную строку в массив с помощью метода .Split(), где точкой разделения будет переход на новую строку. Далее сделаем все значения кроме русских символов строчными. Последним действием с благодаря команде .Replace() заменим все зарезервированные слова в каждой строке на их прописные представления.
+4.4 Блок-схемы алгоритмов
+4.5 Программная реализация
+
+	Листинг программы задания 1:
+using System;
+
+namespace Task5
+{
+    class Task5
+    {
+        static void Main(string[] args)
+        {
+            string a = Console.ReadLine();
+            // A : sada : asdasd ; asdfas.
+            int count = countChar(a);
+            Console.WriteLine(a.Replace(':', ';'));
+            Console.WriteLine(count);
+            Console.ReadKey();
+        }
+
+        static int countChar(string a)
+        {
+            int count = 0;
+            for(int i = 0; i < a.Length; i++)
+            {
+                if (a[i] == ':')
+                {
+                    count++;
+                }
+            }
+            return count;
+        }
+    }
+}
+
+
+
+	Листинг программы задания 2:
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace Task6
+{
+    class Task6
+    {
+        static void Main(string[] args)
+        {
+            string a =
+@"#include<iostream>
+using namespace std;
+
+int main() {
+    cout << ""Привет мир"" << endl;
+    return 0;
+}";
+            string[] str = a.Split(new string[] { System.Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+            string[] dictionary = new string[]
+                {"include", "iostream", "using", "namespace", "int", "main", "cout", "endl", "return"};
+
+            lowerAllEnglishChar(str);
+            upperByDictionary(str, dictionary);
+            print(str);
+
+            Console.ReadKey();
+        }
+
+        static void print(string[] str)
+        {
+            for (int i = 0; i < str.Length; i++)
+            {
+                Console.WriteLine(str[i]);
+            }
+        }
+
+        static void lowerAllEnglishChar(string[] str)
+        {
+            for (int i = 0; i < str.Length; i++)
+            {
+                for (int j = 0; j < str[i].Length; j++)
+                {
+                    if ((int)str[i][j] < 1040 || (int)str[i][j] > 1103)
+                    {
+                        StringBuilder s = new StringBuilder(str[i]);
+                        s[j] = Convert.ToChar(Convert.ToString(str[i][j]).Substring(0, 1).ToLower());
+                        str[i] = s.ToString();
+                    }
+                }
+            }
+        }
+
+        static void upperByDictionary(string[] str, string[] dictionary)
+        {
+            for (int i = 0; i < dictionary.Length; i++)
+            {
+                for (int j = 0; j < str.Length; j++)
+                {
+                    string low = dictionary[i].Substring(0, dictionary[i].Length).ToLower();
+                    string up = dictionary[i].Substring(0, dictionary[i].Length).ToUpper();
+                    str[j] = str[j].Replace(low, up);
+                }
+            }
+        }
+    }
+}
+
+
+
+4.6 Скриншоты выполнения программ
+
+5. Файлы
+5.1 Общие сведения
+5.2 Постановка задач
+	Задание 1: Проверить, есть ли в текстовом файле слово «студент». Одно слово от другого отделяется пробелом.
+	Задание 2: Дан символьный файл f. Записать в файл g с сохранением порядка следования те символы файла f: а) которым в этом файле предшествует буква а;  б) вслед за которым в этом файле идет буква а.
+5.3 
+	Алгоритм решения задания 1: Считываем файл по заданному пути и сохраняем все, что хранит файл в переменную типа string, далее с помощью метода .Contains() проверяем существует ли слово "студент" в данном тексте, если слово есть, выводим "Содержит", иначе "Не содержит". 
+	Алгоритм решения задания 2: Считываем файл "f.txt" по заданному пути и сохраняем все, что хранит файл в переменную типа string, далее проверяем циклично значения на, то идет ли до символа символ 'a' или после, если условие выполняется, записываем данное значение в переменную типа string. По окончанию работы цикла у нас есть переменная, которая содержит все нужные символы. Записываем данную переменную в файл "g.txt".
+5.4 Блок-схемы алгоритмов
+5.5 Программная реализация
+
+	Листинг программы задания 1:
+using System;
+using System.Collections.Generic;
+using System.Text;
+using System.IO;
+using System.Linq;
+
+namespace Task7
+{
+    class Task7
+    {
+        static void Main(string[] args)
+        {
+            string path = "/Users/eduard/Projects/test_Vitya/test_Vitya/student.txt";
+            string a = File.ReadAllText(path);
+            check(a, "студент");
+            Console.ReadKey();
+        }
+
+        static void check(string a, string b)
+        {
+            if (a.Contains(b))
+            {
+                Console.WriteLine("Содержит");
+            }
+            else
+            {
+                Console.WriteLine("Не содержит");
+            }
+        }
+    }
+}
+
+
+	Листинг программы задания 2:
+using System;
+using System.Collections.Generic;
+using System.Text;
+using System.IO;
+using System.Linq;
+
+namespace Task8
+{
+    class Task8
+    {
+        private static string path = "/Users/eduard/Projects/test_Vitya/test_Vitya/";
+
+        static void Main(string[] args)
+        {
+            writeFile("g.txt", createLine(File.ReadAllText(path + "f.txt")));
+            Console.ReadKey();
+        }
+
+        static string createLine(string a)
+        {
+            string b = "";
+            if (a[1] == 'a')
+            {
+                b += a[0];
+            }
+            for (int i = 1; i < a.Length - 1; i++)
+            {
+                if (a[i - 1] == 'a' || a[i + 1] == 'a')
+                {
+                    b += a[i];
+                }
+            }
+            return b;
+        }
+
+        static void writeFile(string file, string text)
+        {
+            try
+            {
+                StreamWriter sw = new StreamWriter(path + file);
+                sw.WriteLine(text);
+                sw.Close();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Exception: " + e.Message);
+            }
+            finally
+            {
+                Console.WriteLine("Executing finally block.");
+            }
+        }
+        
+    }
+}
+
+
+
+5.6 Скриншоты выполнения программ
